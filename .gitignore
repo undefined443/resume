@@ -9,11 +9,14 @@
 /\!*
 .DS_Store
 *.pdf
+.vscode
+.claude
 
 ############################################
 ## LATEX TEMPORARY FILES
 ############################################
 
+build
 *.log
 *.aux
 *.bbl

@@ -1,0 +1,23 @@
+# tex-fmt configuration file
+# User-level configuration file: ~/Library/Application Support/tex-fmt/tex-fmt.toml
+# See: https://github.com/WGUNDERWOOD/tex-fmt
+
+# Line wrapping settings
+wrap = true    # 启用自动换行
+wraplen = 120  # 换行长度
+
+# Indentation settings
+tabsize = 2        # tab 长度
+tabchar = "space"  # tab 字符
+
+# Output settings
+print = false  # 不打印到 stdout
+check = false  # 仅格式检查
+stdin = false  # 不从 stdin 读取输入
+
+# Logging
+verbosity = "warn"  # 日志等级
+
+# Custom lists and environments
+lists = []
+no-indent-envs = []
