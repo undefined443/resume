@@ -1,4 +1,4 @@
-\ProvidesExplPackage{cjk-fonts}{2025/01/19} {2.0} {CJK fonts configuration with Noto fonts}
+\ProvidesExplPackage{cjk-fonts}{2025/01/19} {3.0} {CJK fonts configuration with Noto fonts using LaTeX3}
 
 \RequirePackage{xeCJK}
 
@@ -17,22 +17,49 @@
 % 思源等宽字体使用思源黑体
 \setCJKmonofont{NotoSansCJKsc-Regular}
 
-% 定义更多字体系列，使用思源字体的不同变体
-\setCJKfamilyfont{zhsong}{NotoSerifCJKsc-Regular}       % 宋体 -> 思源宋体
-\setCJKfamilyfont{zhhei}{NotoSansCJKsc-Regular}        % 黑体 -> 思源黑体
-\setCJKfamilyfont{zhhei}{NotoSansCJKsc-Bold}           % 黑体粗 -> 思源黑体粗体
-\setCJKfamilyfont{zhfs}{NotoSansCJKsc-Regular}          % 仿宋 -> 思源黑体
-\setCJKfamilyfont{zhkai}{NotoSerifCJKsc-Regular}        % 楷书 -> 思源宋体
-\setCJKfamilyfont{zhkai}{NotoSerifCJKsc-Medium}         % 楷书粗 -> 思源宋体中等
-\setCJKfamilyfont{zhli}{NotoSerifCJKsc-Regular}         % 隶书 -> 思源宋体
-\setCJKfamilyfont{zhyou}{NotoSansCJKsc-Regular}         % 幼圆 -> 思源黑体
+% Use LaTeX3 to define font families and commands
+\ExplSyntaxOn
 
-% 字体命令映射到 CJK 字体
-\newcommand*{\songti}{\CJKfamily{zhsong}}    % 宋体 -> 思源宋体
-\newcommand*{\heiti}{\CJKfamily{zhhei}}        % 黑体 -> 思源黑体
-\newcommand*{\kaishu}{\CJKfamily{zhkai}}       % 楷书 -> 思源宋体
-\newcommand*{\fangsong}{\CJKfamily{zhfs}}     % 仿宋 -> 思源黑体
-\newcommand*{\lishu}{\CJKfamily{zhli}}        % 隶书 -> 思源宋体
-\newcommand*{\youyuan}{\CJKfamily{zhyou}}     % 幼圆 -> 思源黑体
+% Define font family mappings
+\prop_new:N \g_cjk_fonts_family_prop
+
+% Populate font family mappings
+\prop_put:Nnn \g_cjk_fonts_family_prop {zhsong} {NotoSerifCJKsc-Regular}
+\prop_put:Nnn \g_cjk_fonts_family_prop {zhhei} {NotoSansCJKsc-Regular}
+\prop_put:Nnn \g_cjk_fonts_family_prop {zhhei-bold} {NotoSansCJKsc-Bold}
+\prop_put:Nnn \g_cjk_fonts_family_prop {zhfs} {NotoSansCJKsc-Regular}
+\prop_put:Nnn \g_cjk_fonts_family_prop {zhkai} {NotoSerifCJKsc-Regular}
+\prop_put:Nnn \g_cjk_fonts_family_prop {zhkai-medium} {NotoSerifCJKsc-Medium}
+\prop_put:Nnn \g_cjk_fonts_family_prop {zhli} {NotoSerifCJKsc-Regular}
+\prop_put:Nnn \g_cjk_fonts_family_prop {zhyou} {NotoSansCJKsc-Regular}
+
+% Define all font families using LaTeX3
+\seq_map_function:nN
+  { zhsong, zhhei, zhhei-bold, zhfs, zhkai, zhkai-medium, zhli, zhyou }
+  \cjk_fonts_define_family:Nn
+
+\cs_new_protected:Nn \cjk_fonts_define_family:Nn
+  {
+    \setCJKfamilyfont{#1} {\prop_item:Nn \g_cjk_fonts_family_prop {#1}}
+  }
+
+% Define font commands with LaTeX3
+\NewDocumentCommand \songti { } { \CJKfamily{zhsong} }
+\NewDocumentCommand \heiti { } { \CJKfamily{zhhei} }
+\NewDocumentCommand \kaishu { } { \CJKfamily{zhkai} }
+\NewDocumentCommand \fangsong { } { \CJKfamily{zhfs} }
+\NewDocumentCommand \lishu { } { \CJKfamily{zhli} }
+\NewDocumentCommand \youyuan { } { \CJKfamily{zhyou} }
+
+% Provide specific commands for bold variants
+\NewDocumentCommand \heitibold { } { \CJKfamily{zhhei-bold} }
+\NewDocumentCommand \kaiishumedium { } { \CJKfamily{zhkai-medium} }
+
+% Utility commands for font switching
+\NewDocumentCommand \cjkfontssongti { m } { \songti #1 }
+\NewDocumentCommand \cjkfontsheiti { m } { \heiti #1 }
+\NewDocumentCommand \cjkfontskaishu { m } { \kaishu #1 }
+
+\ExplSyntaxOff
 
 \endinput

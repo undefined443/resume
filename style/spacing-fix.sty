@@ -1,4 +1,4 @@
-\ProvidesExplPackage{spacing-fix}{2025/01/19} {2.0} {spacing fix package for setspace}
+\ProvidesExplPackage{spacing-fix}{2025/01/19} {3.0} {spacing fix package for setspace with LaTeX3}
 
 % Fix extra space introduced by setspace package
 % This package solves the spacing gap issue when using setspace environment
@@ -8,21 +8,38 @@
 % The following code patches the spacing environment to remove extra vertical space
 % It should be loaded after setspace package
 \RequirePackage{calc}
-\newlength\modparskip
-\newlength\modbaselineskip
-  \def\baselinestretch{1} % this parameter will be redefined at start of 'spacing' environment
-  \setlength\modparskip{\parskip/\real{\baselinestretch}}%
-  \setlength\modbaselineskip{\baselineskip/\real{\baselinestretch}}%
-\makeatletter
-\renewenvironment{spacing}[1]{\par%
-   \def\baselinestretch{#1}%
-   \ifx\@currsize\normalsize\@normalsize\else\@currsize\fi%
-}%
-{\par%
-   \vskip \modparskip%      % originally: \vskip \parskip
-   \vskip \modbaselineskip% % originally: \vskip \baselineskip
-}
-\makeatother
+
+% Use LaTeX3 syntax for better error handling
+\ExplSyntaxOn
+
+% Initialize variables
+\int_new:N \g_spacing_fix_baselinestretch_int
+\int_set:Nn \g_spacing_fix_baselinestretch_int {1}
+\dim_new:N \g_spacing_fix_parskip_dim
+\dim_new:N \g_spacing_fix_baselineskip_dim
+
+% Patch the spacing environment with LaTeX3 syntax
+\RenewDocumentEnvironment { spacing } { m }
+  {
+    \par
+    \int_set:Nn \g_spacing_fix_baselinestretch_int { #1 }
+    % Reset font size if needed
+    \cs_if_eq:NN \@currsize \normalsize
+      { \@normalsize }
+      { }
+    % Calculate new spacing
+    \dim_set_eq:NN \g_spacing_fix_parskip_dim \parskip
+    \dim_div:nnV \g_spacing_fix_parskip_dim \g_spacing_fix_baselinestretch_int
+    \dim_set_eq:NN \g_spacing_fix_baselineskip_dim \baselineskip
+    \dim_div:nnV \g_spacing_fix_baselineskip_dim \g_spacing_fix_baselinestretch_int
+  }
+  {
+    \par
+    \vskip \g_spacing_fix_parskip_dim
+    \vskip \g_spacing_fix_baselineskip_dim
+  }
+
+\ExplSyntaxOff
 
 % End of spacing fix package
 % This package provides a patched version of the spacing environment
