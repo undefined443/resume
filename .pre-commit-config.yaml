@@ -13,7 +13,9 @@ repos:
       - id: check-merge-conflict
       - id: check-added-large-files
       - id: check-executables-have-shebangs
+        exclude: ^\.?latexmkrc$
       - id: check-shebang-scripts-are-executable
+        exclude: ^\.?latexmkrc$
 
   # Prettier - Markdown, YAML, JSON formatter
   - repo: https://github.com/pre-commit/mirrors-prettier
