@@ -1,4 +1,5 @@
-\ProvidesExplClass{resume}[2025/01/19 v3.0 An elegant Résumé class with LaTeX3]
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesClass{resume}[2015/05/25 An elegant Résumé class]
 \LoadClass[11pt]{article}
 
 % disable indent globally
@@ -34,32 +35,15 @@
 % nth for ordinal numbers
 \RequirePackage[super]{nth}
 
-% Set font size commands using LaTeX3 syntax for better maintainability
-\ExplSyntaxOn
-
-% Define a common function for setting font sizes
-\cs_new_protected:Nn \resume_set_fontsize:nn
-  {
-    \fontsize {#1} {#2} \selectfont
-  }
-
-% Use LaTeX3 for better code organization
-\NewDocumentCommand \SetResumeFontSize { m m }
-  {
-    \resume_set_fontsize:nn {#1} {#2}
-  }
-
-\ExplSyntaxOff
-
-% Redefine font size commands using the common function
-\renewcommand{\normalsize}{\SetResumeFontSize{10}{12}}
-\renewcommand{\small}{\SetResumeFontSize{9}{11}}
-\renewcommand{\footnotesize}{\SetResumeFontSize{8}{10}}
-\renewcommand{\large}{\SetResumeFontSize{12}{14}}
-\renewcommand{\Large}{\SetResumeFontSize{14}{17}}
-\renewcommand{\LARGE}{\SetResumeFontSize{18}{22}}
-\renewcommand{\huge}{\SetResumeFontSize{20}{24}}
-\renewcommand{\Huge}{\SetResumeFontSize{24}{28}}
+% Set font size commands
+\renewcommand{\normalsize}{\fontsize{10pt}{12pt}\selectfont}
+\renewcommand{\small}{\fontsize{9pt}{11pt}\selectfont}
+\renewcommand{\footnotesize}{\fontsize{8pt}{10pt}\selectfont}
+\renewcommand{\large}{\fontsize{12pt}{14pt}\selectfont}
+\renewcommand{\Large}{\fontsize{14pt}{17pt}\selectfont}
+\renewcommand{\LARGE}{\fontsize{18pt}{22pt}\selectfont}
+\renewcommand{\huge}{\fontsize{20pt}{24pt}\selectfont}
+\renewcommand{\Huge}{\fontsize{24pt}{28pt}\selectfont}
 
 % List customization
 \setlist{noitemsep} % removes spacing from items but leaves space around the whole list
@@ -86,33 +70,28 @@
 \titlespacing*{\subsection}{0cm}{*1.8}{*0.6}
 
 % Document commands
-\NewDocumentCommand \datedsection { m m }
-  {
-    \section[#1]{#1 \hfill #2}
-  }
+\newcommand{\datedsection}[2]{%
+  \section[#1]{#1 \hfill #2}%
+}
 
-\NewDocumentCommand \datedsubsection { m m }
-  {
-    \subsection[#1]{#1 \hfill #2}
-  }
+\newcommand{\datedsubsection}[2]{%
+  \subsection[#1]{#1 \hfill #2}%
+}
 
-\NewDocumentCommand \datedline { m m }
-  {
-    {\par #1 \hfill #2 \par}
-  }
+\newcommand{\datedline}[2]{%
+  {\par #1 \hfill #2 \par}%
+}
 
-\NewDocumentCommand \name { m }
-  {
-    \centerline{\Huge\scshape{#1}}
-    \vspace{1.25ex}
-  }
+\newcommand{\name}[1]{%
+  \centerline{\Huge\scshape{#1}}%
+  \vspace{1.25ex}%
+}
 
 % defines one's name
 % usage: \nameTest{<name>}
-\NewDocumentCommand \nameTest { m }
-  {
-    {\large\scshape{#1}}
-  }
+\newcommand{\nameTest}[1]{%
+  {\large\scshape{#1}}%
+}
 
 % Override section title icons if already defined
 \providecommand{\faGraduationCap}{\faIcon[regular]{graduation-cap}}
@@ -143,49 +122,32 @@
 }
 
 
-\NewDocumentCommand \basicInfo { m }
-  {
-    \resume_centered_info:n { #1 }
-  }
+\newcommand{\basicInfo}[1]{%
+  \centerline{\sffamily\large{#1}}%
+  \vspace{1.5ex}%
+}
 
-\NewDocumentCommand \role { m m }
-  {
-    \resume_role_format:nn { #1 } { #2 }
-  }
+\newcommand{\role}[2]{%
+  {\par \textit{#1} ~ #2 \par}%
+  \vspace{0.85ex}%
+}
 
-% Use LaTeX3 for better code organization and maintainability
-\ExplSyntaxOn
+% defines skills section
+% usage: \skills{<section-title>}
+\newcommand{\skills}[1]{\section{\faIcon[regular]{gear}\ #1}}
 
-% Define helper functions for common operations
-\cs_new_protected:Nn \resume_centered_info:n
-  {
-    \centerline { \sffamily \large { #1 } }
-    \vspace { 1.5ex }
-  }
+% defines education section
+% usage: \education{<section-title>}
+\newcommand{\education}[1]{\section{\faIcon[regular]{graduation-cap}\ #1}}
 
-\cs_new_protected:Nn \resume_role_format:nn
-  {
-    \par \textit { #1 } ~ #2 \par
-    \vspace { 0.85ex }
-  }
+% defines experience section
+% usage: \experience{<section-title>}
+\newcommand{\experience}[1]{\section{\faIcon[regular]{users}\ #1}}
 
-% Initialize property for future extensions
-\prop_new:N \g_resume_settings_prop
+% defines honors section
+% usage: \honors{<section-title>}
+\newcommand{\honors}[1]{\section{\faIcon[regular]{trophy}\ #1}}
 
-\ExplSyntaxOff
-
-% Backwards compatibility - define individual commands if needed
-\NewDocumentCommand \skills { m } { \section{\faIcon[regular]{gear}\ #1} }
-\NewDocumentCommand \education { m } { \section{\faIcon[regular]{graduation-cap}\ #1} }
-\NewDocumentCommand \experience { m } { \section{\faIcon[regular]{users}\ #1} }
-\NewDocumentCommand \honors { m } { \section{\faIcon[regular]{trophy}\ #1} }
-\NewDocumentCommand \misc { m } { \section{\faIcon[regular]{info}\ #1} }
-% LaTeX3 Migration Completed - v3.0
-% This file has been migrated to use LaTeX3 syntax for better maintainability
-% Key improvements:
-% - Uses \ProvidesExplClass instead of \ProvidesClass
-% - Implements LaTeX3 helper functions for common operations
-% - Better error handling and code organization
-% - Future-ready with property system for extensions
-%
-% Date: 2025-01-19
+% defines miscellaneous section
+% usage: \misc{<section-title>}
+\newcommand{\misc}[1]{\section{\faIcon[regular]{info}\ #1}}
