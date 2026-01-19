@@ -3,7 +3,7 @@
 # LaTeXmk configuration for resume project
 # This file configures latexmk for optimal compilation
 
-@default_files = ('resume.tex', 'resume-with-avator.tex');
+@default_files = ('resume.tex', 'resume-with-avator.tex', 'resume-zh_CN.tex');
 
 # Set default xelatex as the engine
 $xelatex = 'xelatex %O %S';

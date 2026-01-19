@@ -1,0 +1,29 @@
+\ProvidesExplPackage{spacing-fix}{2025/01/19} {2.0} {spacing fix package for setspace}
+
+% Fix extra space introduced by setspace package
+% This package solves the spacing gap issue when using setspace environment
+% Reference: http://tex.stackexchange.com/questions/138752/unnecessary-space-after-endspacing
+\RequirePackage{setspace}
+
+% The following code patches the spacing environment to remove extra vertical space
+% It should be loaded after setspace package
+\RequirePackage{calc}
+\newlength\modparskip
+\newlength\modbaselineskip
+  \def\baselinestretch{1} % this parameter will be redefined at start of 'spacing' environment
+  \setlength\modparskip{\parskip/\real{\baselinestretch}}%
+  \setlength\modbaselineskip{\baselineskip/\real{\baselinestretch}}%
+\makeatletter
+\renewenvironment{spacing}[1]{\par%
+   \def\baselinestretch{#1}%
+   \ifx\@currsize\normalsize\@normalsize\else\@currsize\fi%
+}%
+{\par%
+   \vskip \modparskip%      % originally: \vskip \parskip
+   \vskip \modbaselineskip% % originally: \vskip \baselineskip
+}
+\makeatother
+
+% End of spacing fix package
+% This package provides a patched version of the spacing environment
+% from setspace to eliminate unwanted vertical spacing

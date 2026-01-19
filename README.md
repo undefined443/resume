@@ -11,7 +11,7 @@ A mordern fork of [billryan/resume](https://github.com/billryan/resume)
 1. Clone the project.
 
    ```
-   git clone https://github.com/undefined443/resume.git --branch master --depth 1 --single-branch <folder>
+   git clone https://github.com/undefined443/resume.git --branch main --single-branch --depth 1
    ```
 
 2. Install Font Awesome 7 macro.
@@ -20,8 +20,15 @@ A mordern fork of [billryan/resume](https://github.com/billryan/resume)
    tlmgr install fontawesome7
    ```
 
-3. Compile the project.
+3. If you need to compile resume-zh_CN, install the Noto CJK fonts.
 
    ```sh
-   latexmk resume.tex
+   brew install --cask font-noto-serif-cjk-sc font-noto-sans-cjk-sc  # macOS
+   sudo apt install fonts-noto-cjk  # Debian
+   ```
+
+4. Compile the project.
+
+   ```sh
+   latexmk
    ```

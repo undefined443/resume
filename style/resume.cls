@@ -138,3 +138,38 @@
     {\par \textit{#1} ~ #2 \par}
     \vspace{0.85ex}
   }
+
+% defines skills section
+% usage: \skills{<section-title>}
+\NewDocumentCommand \skills { m }
+  {
+    \section{\faIcon[regular]{gear}\ #1}
+  }
+
+% defines education section
+% usage: \education{<section-title>}
+\NewDocumentCommand \education { m }
+  {
+    \section{\faIcon[regular]{graduation-cap}\ #1}
+  }
+
+% defines experience section
+% usage: \experience{<section-title>}
+\NewDocumentCommand \experience { m }
+  {
+    \section{\faIcon[regular]{users}\ #1}
+  }
+
+% defines honors section
+% usage: \honors{<section-title>}
+\NewDocumentCommand \honors { m }
+  {
+    \section{\faIcon[regular]{trophy}\ #1}
+  }
+
+% defines miscellaneous section
+% usage: \misc{<section-title>}
+\NewDocumentCommand \misc { m }
+  {
+    \section{\faIcon[regular]{info}\ #1}
+  }
